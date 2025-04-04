@@ -55,6 +55,8 @@ public class SavingsAndInvestmentsSteps {
         savingsAndInvestmentsPage = new SavingsAndInvestmentsPage(driver);
         elementUtils = new ElementUtils(driver);
         screenshotUtils = new ScreenshotUtils(driver); // Inicializa ScreenshotUtils
+        // Verificar y recargar la página si aparece "Access denied" (hasta 3 intentos)
+        savingsAndInvestmentsPage.checkAndReloadIfAccessDenied(3);
     }
 
     // ------>   Simular una Inversión Creciente de $50,000

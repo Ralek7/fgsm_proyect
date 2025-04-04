@@ -18,10 +18,21 @@ public class LoanSimulationPage {
     private By resultText = By.xpath("//*[@id='content4']/div/div/div[5]/span");
     private By prestamoDigitalButton = By.xpath("//a[contains(@data-name,'Préstamo Digital BanCoppel')]");
 
+    // Locator para el mensaje "Access denied"
+    private By accessDeniedMessage = By.className("error-title");
+
+    // ID del iframe que contiene el mensaje "Access denied"
+    private String iframeId = "main-iframe";
+
     // Constructor
     public LoanSimulationPage(WebDriver driver) {
         this.driver = driver;
         this.elementUtils = new ElementUtils(driver);
+    }
+
+    // Método para verificar y recargar la página si aparece "Access denied"
+    public void checkAndReloadIfAccessDenied(int maxAttempts) {
+        elementUtils.checkAndReloadIfAccessDenied(accessDeniedMessage, iframeId, maxAttempts);
     }
 
     // Métodos para usar ElementUtils

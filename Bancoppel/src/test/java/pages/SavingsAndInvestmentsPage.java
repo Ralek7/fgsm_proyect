@@ -18,10 +18,21 @@ public class SavingsAndInvestmentsPage {
     private By calcularButton = By.xpath("//*[@id='btn_calcular']/img");
     private By resultText = By.xpath("//*[@id=\'montoFinalRes\']");
 
+    // Locator para el mensaje "Access denied"
+    private By accessDeniedMessage = By.className("error-title");
+
+    // ID del iframe que contiene el mensaje "Access denied"
+    private String iframeId = "main-iframe";
+
     // Constructor
     public SavingsAndInvestmentsPage(WebDriver driver) {
         this.driver = driver;
         this.elementUtils = new ElementUtils(driver);
+    }
+
+    // Método para verificar y recargar la página si aparece "Access denied"
+    public void checkAndReloadIfAccessDenied(int maxAttempts) {
+        elementUtils.checkAndReloadIfAccessDenied(accessDeniedMessage, iframeId, maxAttempts);
     }
 
     // Métodos para usar ElementUtils

@@ -57,6 +57,8 @@ public class LoanSimulatorSteps {
         loanSimulationPage = new LoanSimulationPage(driver);
         elementUtils = new ElementUtils(driver);
         screenshotUtils = new ScreenshotUtils(driver);
+        // Verificar y recargar la página si aparece "Access denied" (hasta 3 intentos)
+        loanSimulationPage.checkAndReloadIfAccessDenied(3);
     }
 
 

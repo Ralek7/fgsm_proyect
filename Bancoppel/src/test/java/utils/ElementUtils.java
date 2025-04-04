@@ -1,8 +1,9 @@
 package utils;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 
 
@@ -17,6 +18,38 @@ public class ElementUtils {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         this.screenshotUtils = new ScreenshotUtils(driver);
 
+    }
+
+    // Método para verificar y recargar la página si aparece "Access denied"
+    public void checkAndReloadIfAccessDenied(By accessDeniedLocator, String iframeId, int maxAttempts) {
+        int attempts = 0;
+
+        while (attempts < maxAttempts) {
+            try {
+                // Cambiar al iframe que contiene el mensaje "Access denied"
+                wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(iframeId));
+
+                // Esperar a que el mensaje "Access denied" aparezca (timeout corto)
+                WebElement accessDeniedElement = wait.until(ExpectedConditions.presenceOfElementLocated(accessDeniedLocator));
+
+                if (accessDeniedElement != null) {
+                    System.out.println("Access denied detected. Reloading page...");
+                    driver.navigate().refresh(); // Recargar la página
+                    attempts++;
+                }
+            } catch (Exception e) {
+                // Si no se encuentra el mensaje, salir del bucle
+                System.out.println("No access denied message found.");
+                break;
+            } finally {
+                // Volver al contexto principal (fuera del iframe)
+                driver.switchTo().defaultContent();
+            }
+        }
+
+        if (attempts == maxAttempts) {
+            System.out.println("Max reload attempts reached. Access denied may persist.");
+        }
     }
 
     // Método de espera explícita
